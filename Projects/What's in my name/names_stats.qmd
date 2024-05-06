@@ -1,0 +1,115 @@
+---
+title: "Client Report - What’s in a name?"
+subtitle: "Course DS 250"
+author: "Leonardo Alvarino"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+execute: 
+  warning: false
+    
+---
+
+```{python}
+#| label: libraries
+#| include: false
+import pandas as pd
+import numpy as np
+import plotly.express as px
+```
+
+
+## Elevator pitch
+
+Did you know the impact that popular movies and actors can have on the usage of names over time? This week, we discovered that the release of 'Raiders of the Lost Ark' and the rising popularity of Harrison Ford have apparently led to a substantial increase in the usage of this name. Another very interesting aspect related to this topic is that you can often estimate someone's age just by knowing their name, since some names have years of peaks of popularity.
+
+
+```{python}
+#| label: project data
+#| code-summary: Read and format project data
+# Include and execute your code here
+df = pd.read_csv("names_year.csv")
+```
+
+
+## Question|Task 1
+__How does your name at your birth year compare to its use historically?__
+
+My name was pretty stable over time, until a little bit before my birthday (1998). Around 1997 it started to increase at a faster rate, doing some research it might have been because of the release of "Titanic" movie which was also in 1997. Leonardo Di Caprio was the main actor, and the movie was very succesful in the US.
+
+```{python}
+Leonardo_df = df.query('name == "Leonardo"')
+Leonardo_line = px.line(Leonardo_df, x='year',y='Total', title = 'Use of Leonardo Over Time')
+Leonardo_line.add_vline(x=1998)
+Leonardo_line.update_layout(title_x=0.5)
+Leonardo_line.show()
+```
+
+Findings:
+Minimal Historical Usage (Before 90's): It was a pretty uncommon name, not popular at all since the first years of the data.
+Increase of usage after 90's: Around this years it became more and more popular, increasing substantially until the last year of the data recorded.
+
+
+## Question|Task 2
+__If you talked to someone named Brittany on the phone, what is your guess of his or her age? What ages would you not guess?__
+
+Just by looking at the chart, we can tell that this name started to become popular in around 1982, reaching its peak in 1990 and decreasing until 2000. Knowing this, if I had to guess, I would say she is likely to be in her 30's, close to 34.
+
+```{python}
+Brittany_df = df.query('name == "Brittany"')
+Brittany_line = px.line(Brittany_df, x='year',y='Total',title = 'Use of Brittany Over Time')
+Brittany_line.update_layout(title_x=0.5)
+Brittany_line.show()
+```
+
+## Question|Task 3
+__Mary, Martha, Peter, and Paul are all Christian names. From 1920 - 2000, compare the name usage of each of the four names. What trends do you notice?__
+
+We can see that Mary and Paul were the more popular ones and have their peak in the 50's, but they have been decreasing after that until 1970, reaching a similar usage of Peter and Martha which also had a little peak in the 50's. 
+
+```{python}
+christnames_df = df.query('(name == "Mary" or name == "Martha" or name == "Peter" or name == "Paul") and year > 1919 and year <2001 ')
+graph = px.line(christnames_df, x='year',y='Total', color = 'name' ,title = 'Use of Christian Names Over Time')
+graph.update_layout(title_x=0.5)
+graph.show()
+```
+
+
+## Question|Task 4
+__Think of a unique name from a famous movie. Plot the usage of that name and see how changes line up with the movie release. Does it look like the movie had an effect on usage?__
+
+By looking at the chart we can see the tremendous impact the  release of the popular old movie "Raiders of the Lost Ark" had, in the use of the name Harrison, which was the name of the main actor of the movie. 
+
+```{python}
+Harrison_df = df.query('name == "Harrison"')
+Harrison_line = px.line(Harrison_df, x='year',y='Total',title = 'Use of Harrison Over Time')
+Harrison_line.update_layout(title_x=0.5)
+Harrison_line.add_vline(x=1981)
+Harrison_line.add_annotation(x=1981, y=145,
+            text='Release of Raiders of the Lost Ark',
+            showarrow=True,
+            arrowhead=1)
+```
+
+Findings:
+Minimal Historical Usage (Before 1981): The name Harrison, before the movie release had very little usage in the US, it was a rare name at the time.
+Movie release (1981): A substancial increase o the usage can be seen after this year, this can be explained by the success of the movie and the popularity that Harrison Ford gained.
+Continous increase after movie release (1982): We can tell that the popularity of the name continued increasing for 35 years. This might have happened because of the release of other popular movies which also had Harrison Ford as the main character.
+
+
+

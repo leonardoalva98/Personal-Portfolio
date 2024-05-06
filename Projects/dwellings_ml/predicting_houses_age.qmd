@@ -1,0 +1,164 @@
+---
+title: "Client Report - Project 4: Can you predict that?"
+subtitle: "Course DS 250"
+author: "Leonardo Alvarino"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+execute: 
+  warning: false    
+---
+
+```{python}
+#| label: libraries
+#| include: false
+import pandas as pd
+import numpy as np
+import time
+import matplotlib.pyplot as plt
+import plotly_express as px
+
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier 
+from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
+from sklearn.ensemble import RandomForestClassifier
+
+```
+
+## Elevator pitch
+
+This week we predicted with a 92.3% accuracy wether a house was built before 1980 or not with a Machine Learning model called RandomForest from Scikit Learn library. The data set available to train the model had 48 features and 22 913 rows and the most important variables to predict the target were livearea, numbaths and stories.
+
+
+```{python}
+# read the data
+dwell= pd.read_csv("dwellings_ml.csv")
+
+# delete yrbuilt and parcel
+dwell= dwell.drop(['yrbuilt','parcel'], axis=1)
+
+```
+
+## QUESTION|TASK 1
+
+
+The following code creates a scatter plot that helped me to analyze the effects,patterns the "total units" and "Number of bedrooms" variable have in relation to the "Before 1980" variable.
+
+```{python}
+
+fig = px.scatter(
+    dwell,
+    x='numbdrm',
+    y='totunits',
+    color='before1980'
+)
+
+fig.update_layout(
+    xaxis_title="Number of bedrooms",
+    yaxis_title="Total units",
+    title="Scatter Plot of number of bedrooms vs total units"
+)
+
+fig.show()
+
+```
+
+Findings: 
+- All the houses with more than 6 bedrooms were built before 1980, no matter how many units they have.
+- All the houses that have 4 or more units wew built before 1980, no matter the number of bedrooms.
+- Apparently houses in the past (before 1980) used to have more units and bathrooms than now.
+
+The next code creates 2 boxplots, one for houses before 1980 and the other of 1980 or after. This is very helpful to analyze the distribution of the variable "number of bathrooms" and the relationship with "before1980".
+
+```{python}
+fig = px.box(
+    dwell,
+    x='before1980',
+    y='numbaths',
+    color= 'before1980',
+)
+
+fig.update_layout(
+    xaxis_title="Before 1980",
+    yaxis_title="Number of Bathrooms",
+    title="Boxplot of Number of Bathrooms vs Before 1980"
+)
+fig.show()
+```
+
+Findings: 
+- Apparently houses in the past (before 1980) used to have less bathrooms than now.
+- Upper quartile of the houses built before 1980 is equal to the lower quartile to the houses built in 1980 or after.
+
+
+## QUESTION|TASK 2
+
+__Build a classification model labeling houses as being built “before 1980” or “during or after 1980”. Your goal is to reach or exceed 90% accuracy. Explain your final model choice (algorithm, tuning parameters, etc) and describe what other models you tried.__
+
+The following code separates the data into 4 groups, Train X, Train y, TestX and TextY. This is the data preparation to fit the classifier "RandomForest" which I selected since it normally has a high accuracy with its predictions.
+
+```{python}
+X = dwell.drop(["before1980"], axis=1)
+y = dwell["before1980"]
+
+train_data, test_data, train_targets, test_targets = train_test_split(X, y, test_size=.30)
+
+# RandomForestClassifier
+classifier = RandomForestClassifier()
+classifier.fit(train_data, train_targets)
+
+targets_predicted = classifier.predict(test_data)
+```
+
+
+
+## QUESTION|TASK 3
+
+__Justify your classification model by discussing the most important features selected by your model. This discussion should include a chart and a description of the features.__
+
+The following code creates a chart of the classiffier features ranked by importance.
+
+```{python}
+# Create a series containing feature importances from the model and feature names from the training data
+feature_importances = pd.Series(classifier.feature_importances_, index= train_data.columns).sort_values(ascending=False)
+
+# Plot a simple bar chart
+feature_importances.plot.bar(title = 'Classifier Features by Importance')
+```
+
+Findings: 
+- Livearea was the biggest predictor in whether the house was built before 1980, with around 10%.
+- Followed by number of bathrooms and stories with around 8%.
+
+## QUESTION|TASK 4
+
+__Describe the quality of your classification model using 2-3 different evaluation metrics. You also need to explain how to interpret each of the evaluation metrics you use.__
+
+The next code chunk uses 2 Scikit-Learn methods to evaluate the classification model: Accuracy and confusion matrix.
+
+```{python}
+print("Accuracy:", accuracy_score(test_targets, targets_predicted))
+
+# Create the confusion matrix
+cm = confusion_matrix(test_targets, targets_predicted)
+ConfusionMatrixDisplay(confusion_matrix=cm).plot()
+```
+
+Findings:
+- The model accuracy was 92.3%.
+- According to the confusion matrix, there was 279 false positives and 251 false negatives. The accuracy was lower for the houses that were built in 1980 or after.

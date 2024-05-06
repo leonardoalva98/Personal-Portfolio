@@ -1,0 +1,342 @@
+---
+title: "Client Report - Project 5: The war with Star Wars"
+subtitle: "Course DS 250"
+author: "Leonardo Alvarino"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+execute: 
+  warning: false    
+---
+
+```{python}
+#| label: libraries
+#| include: false
+import pandas as pd
+import numpy as np
+import time
+import matplotlib.pyplot as plt
+import plotly_express as px
+
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
+from sklearn.ensemble import RandomForestClassifier
+
+pd.set_option('display.max_columns', None)
+```
+
+## Elevator pitch
+
+In this weeks project we analized a dataset of over 1000 people interviewed about Star Wars movies. The charts made showed that the best movie of the 6 was 'The Empire Strikes Back' with 36% of the votes. Also, the majority of people surveyed thinks that Han Solo shot first with 39%, however, 37% didn't even know what was this question about. Finally we created a Machine Learning model that predicted with almost 70% of accuracy wether a person makes more than $50k based on their Star Wars answers. 
+
+```{python}
+# read the data
+stwars= pd.read_csv("StarWars.csv",  encoding='latin-1')
+```
+
+
+## QUESTION|TASK 1
+
+__Shorten the column names and clean them up for easier use with pandas. Provide a table or list that exemplifies how you fixed the names.__
+
+The following list shows the fixed names of the columns of the dataframe:
+```{python}
+
+# update column names
+new_column_names = {'Have you seen any of the 6 films in the Star Wars franchise?':'wtch_any_sw',
+'Do you consider yourself to be a fan of the Star Wars film franchise?':'fan',
+'Which of the following Star Wars films have you seen? Please select all that apply.':'wtch_sw1',
+'Unnamed: 4':'wtch_sw2',
+'Unnamed: 5':'wtch_sw3',
+'Unnamed: 6':'wtch_sw4',
+'Unnamed: 7':'wtch_sw5',
+'Unnamed: 8':'wtch_sw6',
+'Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film.': 'rank_sw1(1-6)',
+'Unnamed: 10':'rank_sw2(1-6)',
+'Unnamed: 11':'rank_sw3(1-6)',
+'Unnamed: 12':'rank_sw4(1-6)',
+'Unnamed: 13':'rank_sw5(1-6)',
+'Unnamed: 14':'rank_sw6(1-6)',
+'Please state whether you view the following characters favorably, unfavorably, or are unfamiliar with him/her.':'rate_han_solo',
+'Unnamed: 16':'rate_luke',
+'Unnamed: 17':'rate_leia',
+'Unnamed: 18':'rate_anakin',
+'Unnamed: 19':'rate_obi_wan',
+'Unnamed: 20':'rate_palpatine',
+'Unnamed: 21':'rate_darth_vader',
+'Unnamed: 22':'rate_lando',
+'Unnamed: 23':'rate_bobba_fett',
+'Unnamed: 24':'rate_c-3p0',
+'Unnamed: 25':'rate_r2d2',
+'Unnamed: 26':'rate_jar_jar',
+'Unnamed: 27':'rate_padme',
+'Unnamed: 28':'rate_yoda',
+'Which character shot first?':'char_shot_first',
+'Are you familiar with the Expanded Universe?':'fam_exp_univ',
+'Do you consider yourself to be a fan of the Expanded Universe?æ':'fan_exp_univ',
+'Do you consider yourself to be a fan of the Star Trek franchise?':'fan_star_trek',
+'Gender':'gender',
+'Age':'age_group',
+'Household Income':'household_income',
+'Education':'education',
+'Location (Census Region)':'census_region'}
+stwars = stwars.rename(columns=new_column_names)
+print(stwars.columns)
+
+#copy a df for the graphs later
+stwars_graphs = stwars
+```
+
+
+## QUESTION|TASK 2
+
+__Clean and format the data so that it can be used in a machine learning model. As you format the data, you should complete each item listed below. In your final report provide example(s) of the reformatted data with a short description of the changes made.__
+
+__a. Filter the dataset to respondents that have seen at least one film.__
+
+```{python}
+
+stwars2 = stwars[stwars['wtch_any_sw'] == 'Yes']
+stwars2['wtch_any_sw'].value_counts()
+
+# Update from 'wtch_sw1' to'wtch_sw6' columns to be 1 if there is a value and 0 if its null.
+stwars2.loc[:, 'wtch_sw1':'wtch_sw6'] = np.where(stwars2.loc[:, 'wtch_sw1':'wtch_sw6'].notnull(), 1, 0)
+
+
+# delete the rows that haven't seen any movie
+stwars2 = stwars2[~((stwars2['wtch_sw1'] == 0) & 
+                    (stwars2['wtch_sw2'] == 0) & 
+                    (stwars2['wtch_sw3'] == 0) & 
+                    (stwars2['wtch_sw4'] == 0) & 
+                    (stwars2['wtch_sw5'] == 0) & 
+                    (stwars2['wtch_sw6'] == 0))]
+
+stwars2.head(5)
+```
+
+The table above shows the changes of the categorical values of the rows to 0 and 1, this with the objective of delete all the rows that have 0 in all the columns of movies which means that the respondent hasn't seen any movie.
+
+
+
+__b. Create a new column that converts the age ranges to a single number. Drop the age range categorical column.__
+
+```{python}
+
+# Create a different category for each age range
+age_group_change = {
+  '18-29': 0,
+  '30-44': 1,
+  '45-60': 2,
+  '> 60': 3
+}
+# Update the column
+stwars2['age_group'] = stwars2['age_group'].replace(age_group_change)
+
+stwars2['age_group'].value_counts()
+```
+
+After the update of the column, in the little table above we can see the amount of rows in each age_group.
+
+__c. Create a new column that converts the education groupings to a single number. Drop the school categorical column__
+
+
+```{python}
+# Create a different category for each variable of the education column
+education_change = {
+  'Less than high school degree': 0,
+  'High school degree': 1,
+  'Some college or Associate degree': 2,
+  'Bachelor degree': 3,
+  'Graduate degree': 4
+}
+# Update the column
+stwars2['education'] = stwars2['education'].replace(education_change)
+stwars2['education'].value_counts()
+```
+
+After the update of the column, in the little table above we can see the amount of rows of each value in the education column.
+
+__d. Create a new column that converts the income ranges to a single number. Drop the income range categorical column.__
+
+```{python}
+# Create a different category for each variable of the education column
+household_income_change = {
+  '$0 - $24,999': 0,
+  '$25,000 - $49,999': 1,
+  '$50,000 - $99,999': 2,
+  '$100,000 - $149,999': 3,
+  '$150,000+': 4
+}
+# Update the column
+stwars2['household_income'] = stwars2['household_income'].replace(household_income_change)
+stwars2['household_income'].value_counts()
+```
+
+After the update, in the little table above we can see the amount of rows of each value in the household_income column.
+
+
+__e. Create your target (also known as “y” or “label”) column based on the new income range column.__
+
+
+```{python}
+# target will be more than 1 (50 000 or more)
+stwars2['new_income'] = np.where(stwars2['household_income'] > 1 , 1, 0)
+```
+
+In this case, the target will be a new column that will be 1 if the value of the 'household_income' is more than 1 (> 50k) and 0 if is less.
+
+__f. One-hot encode all remaining categorical columns.__
+
+```{python}
+# update columns from 'rate_han_solo' to 'rate_yoda' to single numbers
+rates_change = {
+  'Unfamiliar (N/A)': 0,
+  'Very unfavorably': 1,
+  'Somewhat unfavorably': 2,
+  'Neither favorably nor unfavorably (neutral)': 3,
+  'Somewhat favorably': 4,
+  'Very favorably':5
+}
+
+stwars2.loc[:,'rate_han_solo':'rate_yoda'] = stwars2.loc[:,'rate_han_solo':'rate_yoda'].replace(rates_change)
+
+
+# Replace all the yes and no columns to 1 and 0.
+df5 = stwars2.replace({'Yes': 1, 'No': 0})
+
+#hot encode the rest of categorical variables
+df6 = pd.get_dummies(df5, columns=['char_shot_first', 'gender', 'census_region'])
+df7 = df6.apply(pd.to_numeric, errors='coerce').astype('Int64')
+```
+
+
+## QUESTION|TASK 3
+
+__Validate that the data provided on GitHub lines up with the article by recreating 2 of the visuals from the article.__
+
+
+```{python}
+stwars_graphs['char_shot_first'].value_counts()
+
+
+# Calculate counts
+stwars_graphs = stwars_graphs[stwars_graphs['wtch_any_sw'] == 'Yes']
+counts = stwars_graphs['char_shot_first'].value_counts()
+
+# Convert counts to DataFrame
+df = counts.reset_index()
+df.columns = ['Character', 'Count']
+
+# Calculate percentage
+df['Percentage'] = (df['Count'] / df['Count'].sum()) * 100
+
+# Create horizontal bar chart with percentages
+fig = px.bar(df, x='Percentage', y='Character', orientation='h', text='Percentage',
+             labels={'Percentage': 'Percentage (%)', 'Character': 'Character'})
+
+fig.update_traces(texttemplate='%{text:.1f}%', textposition='inside')
+
+fig.update_layout(yaxis={'categoryorder': 'total ascending'})
+
+
+fig.update_layout(title="Who Shot First?",
+                  title_font=dict(size=24, family="Arial", color="black"),
+                  title_x=0.03,  # Center align the title
+                  title_y=0.97,  # Set the title position
+)
+
+fig.show()
+
+```
+
+From the chart above we can see that the majority of people surveyed thinks that Han Solo was the one who shot first with 39.3%. This is followed by a 37% that didn't know what this question was about, this was probably because they miss that scene or didn't see that chapter. Finally a not so small portion thought that Greedo shot first.
+
+```{python}
+
+stwars_graphs['wtch_sw1'].value_counts()
+
+stwars_graphs.loc[:, 'wtch_sw1':'wtch_sw6'] = np.where(stwars_graphs.loc[:, 'wtch_sw1':'wtch_sw6'].notnull(), 1, 0)
+
+stwars_graphs = stwars_graphs[~((stwars_graphs['wtch_sw1'] == 0) | 
+                    (stwars_graphs['wtch_sw2'] == 0) |
+                    (stwars_graphs['wtch_sw3'] == 0) |
+                    (stwars_graphs['wtch_sw4'] == 0) |
+                    (stwars_graphs['wtch_sw5'] == 0) |
+                    (stwars_graphs['wtch_sw6'] == 0))]
+
+
+total_rows = len(stwars_graphs)
+
+count_value_1 = len(stwars_graphs[stwars_graphs['rank_sw1(1-6)'] == '1'])
+count_value_2 = len(stwars_graphs[stwars_graphs['rank_sw2(1-6)'] == '1'])
+count_value_3 = len(stwars_graphs[stwars_graphs['rank_sw3(1-6)'] == '1'])
+count_value_4 = len(stwars_graphs[stwars_graphs['rank_sw4(1-6)'] == '1'])
+count_value_5 = len(stwars_graphs[stwars_graphs['rank_sw5(1-6)'] == '1'])
+count_value_6 = len(stwars_graphs[stwars_graphs['rank_sw6(1-6)'] == '1'])
+
+
+percentage_values = [(count_value_6 / total_rows) * 100,
+                     (count_value_5 / total_rows) * 100,
+                     (count_value_4 / total_rows) * 100,
+                     (count_value_3 / total_rows) * 100,
+                     (count_value_2 / total_rows) * 100,
+                     (count_value_1 / total_rows) * 100
+                      ] 
+
+# Create DataFrame with movie names and percentage values
+df = pd.DataFrame({'Chapter': ['Return of the Jedi', 'The Empire Strikes Back','A New Hope','Revenge of the Sith','Attack of the Clones',  'The Phantom Menace'],
+                   'Percentage': percentage_values})
+
+fig = px.bar(df, x='Percentage', y='Chapter', orientation='h', text='Percentage',
+             labels={'Percentage': 'Percentage (%)', 'Chapter': 'Chapter'})
+
+fig.update_traces(texttemplate='%{text:.1f}%', textposition='outside')
+
+fig.update_layout(title="What's the Best 'Star Wars' Movie?",
+                  title_font=dict(size=24, family="Arial", color="black"),
+                  title_x=0.03,
+                  title_y=0.97,
+)
+
+```
+
+In the chart above we can clearly tell that the 5th chapter, "The Empire Strikes Back", was the favorite among the people who participated in the survey, followed by "A New Hope" and "Return of the Jedi". I find it interesting that these 3 movies are part of the original trilogy, the old movies from the 80's.
+
+
+## QUESTION|TASK 4
+
+__Build a machine learning model that predicts whether a person makes more than $50k. Describe your model and report the accuracy.__
+
+
+```{python}
+df7 = df7.dropna(subset = ['household_income'])
+X = df7.drop(["new_income",'household_income'], axis=1)
+y = df7["new_income"]
+
+train_data, test_data, train_targets, test_targets = train_test_split(X, y, test_size=.20)
+
+# RandomForestClassifier
+classifier = RandomForestClassifier()
+classifier.fit(train_data, train_targets)
+targets_predicted = classifier.predict(test_data)
+
+#accuracy
+print("Accuracy:", accuracy_score(test_targets, targets_predicted))
+```
+
+The model I used was RandomForest with test size of 20%. The accuracy goes from 65 to 75%.
