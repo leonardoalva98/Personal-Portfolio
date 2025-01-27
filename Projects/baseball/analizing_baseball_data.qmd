@@ -84,11 +84,11 @@ table
 
 Findings:
 
-- Both players never played in the same year, stephga01 had his last salary recorded in 2003 while lindsma01 had his first salary recorded in 2007.
+    - Both players never played in the same year, stephga01 had his last salary recorded in 2003 while lindsma01 had his first salary recorded in 2007.
 
-- BYUI players only have 15 years recorded (15 rows)
+    - BYUI players only have 15 years recorded (15 rows)
 
-- The highest salary was recorder in the latest year while the lowest in the oldest.
+    - The highest salary was recorder in the latest year while the lowest in the oldest.
 
 ## QUESTION|TASK 2
 
@@ -113,13 +113,13 @@ table
 
 Findings:
 
-- All the five players have the same batting average.
+    - All the five players have the same batting average.
 
-- Four out of five of the players showed in the table are from the 50's or  before.
+    - Four out of five of the players showed in the table are from the 50's or  before.
 
-- Aybarman01 was the only player in the BA top5 withing the 2000's.
+    - Aybarman01 was the only player in the BA top5 withing the 2000's.
 
-- There aren't any players with more than 3 hits.
+    - There aren't any players with more than 3 hits.
 
 
 b) Use the same query as above, but only include players with at least 10 at bats that year. Print the top 5 results.
@@ -141,11 +141,11 @@ table
 
 Findings:
 
-- Carsonma01, who got second place, is the only player with a BA within the 2000's.
+    - Carsonma01, who got second place, is the only player with a BA within the 2000's.
 
-- Nobody has a 100% batting average, everyone is below 65%.
+    - Nobody has a 100% batting average, everyone is below 65%.
 
-- Nymanny01 holds the record of highest BA (for players with more 9 AB a year) since 1974.
+    - Nymanny01 holds the record of highest BA (for players with more 9 AB a year) since 1974.
 
 c) Now calculate the batting average for players over their entire careers (all years combined). Only include players with at least 100 at bats, and print the top 5 results.
 
@@ -166,11 +166,11 @@ table
 
 Findings:
 
-- All the top 5 players hold these records for more than 100 years.
+    - All the top 5 players hold these records for more than 100 years.
 
-- Nobody has a 100% batting average like in the a) section, everyone is below 37%.
+    - Nobody has a 100% batting average like in the a) section, everyone is below 37%.
 
-- Cobbty01 holds the record of highest BA (for players with 100 or more AB a year) since 1905, almost 120 years ago
+    - Cobbty01 holds the record of highest BA (for players with 100 or more AB a year) since 1905, almost 120 years ago
 
 ## QUESTION|TASK 3
 
@@ -191,9 +191,9 @@ px.line(table,x='yearID',y='Avg_Salary', color = 'teamID')
 
 Findings:
 
-- Boston Red Sox always had a lower average salary compared to the Yankees, except in some eyars in the early 90's and 80's.
+    - Boston Red Sox always had a lower average salary compared to the Yankees, except in some eyars in the early 90's and 80's.
 
-- New York Yankees had their highest average salary in 2010 with $8.25 M.
+    - New York Yankees had their highest average salary in 2010 with $8.25 M.
 
-- Boston Red Sox had their highest average the last year recorded in the data (2016) with $6.5 M.
+    - Boston Red Sox had their highest average the last year recorded in the data (2016) with $6.5 M.
 

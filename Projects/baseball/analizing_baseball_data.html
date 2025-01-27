@@ -3147,7 +3147,7 @@ require(['plotly'], function(Plotly) {
 <section id="elevator-pitch" class="level2">
 <h2 class="anchored" data-anchor-id="elevator-pitch">Elevator pitch</h2>
 <p>In this week’s project, we discovered that players with very few at-bats rank at the top in batting average. The top 5 performers have only 2 or 3 at-bats each. However, as we examined players with more at-bats, we observed a decrease in hits and batting average. Additionally, we explored the variations in average salary between two highly popular baseball players throughout the years, discovering almost a 9x and 7x increase in around 30 years.</p>
-<div id="676829b8" class="cell" data-execution_count="2">
+<div id="d0447e73" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># %%</span></span>
@@ -3160,7 +3160,7 @@ require(['plotly'], function(Plotly) {
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>con <span class="op">=</span> sqlite3.<span class="ex">connect</span>(<span class="st">&#39;lahmansbaseballdb.sqlite&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="a7180929" class="cell" data-execution_count="3">
+<div id="a167c815" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&#39;&#39;&#39;</span></span>
@@ -3311,7 +3311,7 @@ require(['plotly'], function(Plotly) {
 <h2 class="anchored" data-anchor-id="questiontask-1">QUESTION|TASK 1</h2>
 <p><strong>Write an SQL query to create a new dataframe about baseball players who attended BYU-Idaho. The new table should contain five columns: playerID, schoolID, salary, and the yearID/teamID associated with each salary. Order the table by salary (highest to lowest) and print out the table in your report.</strong></p>
 <p>From the table we can see that only 2 players of the dataset attended BYUI, being Lindsma01 the one that had the highest salary in 2014 with 4,000,000 while stephga01 had the lowest salary in 1997 with 150,000. This is a huge difference, but we have to keep in mind that after almost 20 years the inflation plays a huge role in the real value of those salaries.</p>
-<div id="91582095" class="cell" data-execution_count="4">
+<div id="cc7e665e" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&#39;&#39;&#39;</span></span>
@@ -3452,11 +3452,11 @@ require(['plotly'], function(Plotly) {
 </div>
 </div>
 <p>Findings:</p>
-<ul>
-<li><p>Both players never played in the same year, stephga01 had his last salary recorded in 2003 while lindsma01 had his first salary recorded in 2007.</p></li>
-<li><p>BYUI players only have 15 years recorded (15 rows)</p></li>
-<li><p>The highest salary was recorder in the latest year while the lowest in the oldest.</p></li>
-</ul>
+<pre><code>- Both players never played in the same year, stephga01 had his last salary recorded in 2003 while lindsma01 had his first salary recorded in 2007.
+
+- BYUI players only have 15 years recorded (15 rows)
+
+- The highest salary was recorder in the latest year while the lowest in the oldest.</code></pre>
 </section>
 <section id="questiontask-2" class="level2">
 <h2 class="anchored" data-anchor-id="questiontask-2">QUESTION|TASK 2</h2>
@@ -3465,19 +3465,19 @@ require(['plotly'], function(Plotly) {
 <li>Write an SQL query that provides playerID, yearID, and batting average for players with at least 1 at bat that year. Sort the table from highest batting average to lowest, and then by playerid alphabetically. Show the top 5 results in your report.</li>
 </ol>
 <p>We can see in the following table that the Top 5 players by batting average have just a few at bats, 2 or 3, this makes it easier to have a 100%.</p>
-<div id="7f638090" class="cell" data-execution_count="5">
+<div id="c512ad72" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&#39;&#39;&#39;SELECT playerID, yearID, sum(H),sum(AB),(sum(H)/sum (AB)) as BA</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="st">        from batting</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="st">        group by playerID, yearID</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st">        HAVING sum(AB) &gt; 1</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="st">        ORDER BY BA desc,playerID</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="st">        limit 5</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;&#39;&#39;</span> </span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> pd.read_sql_query(q,con)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&#39;&#39;&#39;SELECT playerID, yearID, sum(H),sum(AB),(sum(H)/sum (AB)) as BA</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">        from batting</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">        group by playerID, yearID</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">        HAVING sum(AB) &gt; 1</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">        ORDER BY BA desc,playerID</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">        limit 5</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;&#39;&#39;</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> pd.read_sql_query(q,con)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <div>
@@ -3542,29 +3542,30 @@ require(['plotly'], function(Plotly) {
 </div>
 </div>
 <p>Findings:</p>
-<ul>
-<li><p>All the five players have the same batting average.</p></li>
-<li><p>Four out of five of the players showed in the table are from the 50’s or before.</p></li>
-<li><p>Aybarman01 was the only player in the BA top5 withing the 2000’s.</p></li>
-<li><p>There aren’t any players with more than 3 hits.</p></li>
-</ul>
+<pre><code>- All the five players have the same batting average.
+
+- Four out of five of the players showed in the table are from the 50&#39;s or  before.
+
+- Aybarman01 was the only player in the BA top5 withing the 2000&#39;s.
+
+- There aren&#39;t any players with more than 3 hits.</code></pre>
 <ol start="2" type="a">
 <li>Use the same query as above, but only include players with at least 10 at bats that year. Print the top 5 results.</li>
 </ol>
 <p>However, if we only take into account players with 10 or more at bats, we start seeing lower batting averages.</p>
-<div id="2adc992b" class="cell" data-execution_count="6">
+<div id="32f02788" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&#39;&#39;&#39;SELECT playerID, yearID, sum(H), sum(AB), (CAST(sum(H) as float) /cast (sum (AB) as float)) as BA</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">        from batting</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">        group by playerID, yearID</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">        HAVING sum(AB) &gt; 9</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">        ORDER BY BA desc, playerID</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">        limit 5</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;&#39;&#39;</span> </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> pd.read_sql_query(q,con)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&#39;&#39;&#39;SELECT playerID, yearID, sum(H), sum(AB), (CAST(sum(H) as float) /cast (sum (AB) as float)) as BA</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="st">        from batting</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="st">        group by playerID, yearID</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="st">        HAVING sum(AB) &gt; 9</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">        ORDER BY BA desc, playerID</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st">        limit 5</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;&#39;&#39;</span> </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> pd.read_sql_query(q,con)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <div>
@@ -3629,28 +3630,28 @@ require(['plotly'], function(Plotly) {
 </div>
 </div>
 <p>Findings:</p>
-<ul>
-<li><p>Carsonma01, who got second place, is the only player with a BA within the 2000’s.</p></li>
-<li><p>Nobody has a 100% batting average, everyone is below 65%.</p></li>
-<li><p>Nymanny01 holds the record of highest BA (for players with more 9 AB a year) since 1974.</p></li>
-</ul>
+<pre><code>- Carsonma01, who got second place, is the only player with a BA within the 2000&#39;s.
+
+- Nobody has a 100% batting average, everyone is below 65%.
+
+- Nymanny01 holds the record of highest BA (for players with more 9 AB a year) since 1974.</code></pre>
 <ol start="3" type="a">
 <li>Now calculate the batting average for players over their entire careers (all years combined). Only include players with at least 100 at bats, and print the top 5 results.</li>
 </ol>
 <p>The same happens if we filter only players with 100 or more at bats, the top batting average keeps decreasing with only 36.6%. It is hard to mantain a high batting average when you keep hiting.</p>
-<div id="fef48f20" class="cell" data-execution_count="7">
+<div id="43062ff2" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&#39;&#39;&#39;SELECT playerID, yearID, sum(H), sum(AB), (CAST(sum(H) as float) /cast (sum (AB) as float)) as BA</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="st">        from batting</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">        group by playerID</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">        HAVING sum(AB) &gt; 99</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">        ORDER BY BA desc,playerID</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="st">        limit 5</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;&#39;&#39;</span> </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> pd.read_sql_query(q,con)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&#39;&#39;&#39;SELECT playerID, yearID, sum(H), sum(AB), (CAST(sum(H) as float) /cast (sum (AB) as float)) as BA</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="st">        from batting</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="st">        group by playerID</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">        HAVING sum(AB) &gt; 99</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">        ORDER BY BA desc,playerID</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">        limit 5</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;&#39;&#39;</span> </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> pd.read_sql_query(q,con)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
@@ -3715,31 +3716,31 @@ require(['plotly'], function(Plotly) {
 </div>
 </div>
 <p>Findings:</p>
-<ul>
-<li><p>All the top 5 players hold these records for more than 100 years.</p></li>
-<li><p>Nobody has a 100% batting average like in the a) section, everyone is below 37%.</p></li>
-<li><p>Cobbty01 holds the record of highest BA (for players with 100 or more AB a year) since 1905, almost 120 years ago</p></li>
-</ul>
+<pre><code>- All the top 5 players hold these records for more than 100 years.
+
+- Nobody has a 100% batting average like in the a) section, everyone is below 37%.
+
+- Cobbty01 holds the record of highest BA (for players with 100 or more AB a year) since 1905, almost 120 years ago</code></pre>
 </section>
 <section id="questiontask-3" class="level2">
 <h2 class="anchored" data-anchor-id="questiontask-3">QUESTION|TASK 3</h2>
 <p><strong>Pick any two baseball teams and compare them using a metric of your choice (average salary, home runs, number of wins, etc). Write an SQL query to get the data you need, then make a graph using Plotly Express to visualize the comparison. What do you learn?</strong></p>
 <p>In the next graph we are comparing the average salary of New York Yankees and Boston Red Sox players from 1985 to 2016. We learn that the salaries were very close until the 2000’s and since then, the New York Yankees have mantained the lead with around $2M more in average. We can also see that the average salary has increased over the years, from less than $1M to over $6M. This is partially explained with inflation but there must be other factors too.</p>
-<div id="9f4a8cc1" class="cell" data-execution_count="8">
+<div id="8fd2a5e4" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&#39;&#39;&#39;SELECT teamID, yearID, cast(avg(salary) as int) as Avg_Salary</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM salaries</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="st">    where teamID = &#39;BOS&#39; or teamid = &#39;NYA&#39;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="st">    group by teamID, yearID</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;&#39;&#39;</span> </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> pd.read_sql_query(q,con)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>px.line(table,x<span class="op">=</span><span class="st">&#39;yearID&#39;</span>,y<span class="op">=</span><span class="st">&#39;Avg_Salary&#39;</span>, color <span class="op">=</span> <span class="st">&#39;teamID&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="st">&#39;&#39;&#39;SELECT teamID, yearID, cast(avg(salary) as int) as Avg_Salary</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM salaries</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="st">    where teamID = &#39;BOS&#39; or teamid = &#39;NYA&#39;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="st">    group by teamID, yearID</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;&#39;&#39;</span> </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> pd.read_sql_query(q,con)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>px.line(table,x<span class="op">=</span><span class="st">&#39;yearID&#39;</span>,y<span class="op">=</span><span class="st">&#39;Avg_Salary&#39;</span>, color <span class="op">=</span> <span class="st">&#39;teamID&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div>                            <div id="fcbfa12c-0692-4432-9dab-075f94115b41" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("fcbfa12c-0692-4432-9dab-075f94115b41")) {                    Plotly.newPlot(                        "fcbfa12c-0692-4432-9dab-075f94115b41",                        [{"hovertemplate":"teamID=BOS\u003cbr\u003eyearID=%{x}\u003cbr\u003eAvg_Salary=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BOS","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines","name":"BOS","orientation":"v","showlegend":true,"x":[1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016],"xaxis":"x","y":[435902,496628,676277,579003,672374,642447,1172250,1406793,1197438,1261969,877176,1177597,1281139,1719909,2048306,2598011,3438619,3612202,3701722,4243283,4410897,4448141,5108079,4763929,4184344,5601632,5991202,5093724,5225172,4484513,5659481,6501577],"yaxis":"y","type":"scatter"},{"hovertemplate":"teamID=NYA\u003cbr\u003eyearID=%{x}\u003cbr\u003eAvg_Salary=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"NYA","line":{"color":"#EF553B","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines","name":"NYA","orientation":"v","showlegend":true,"x":[1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016],"xaxis":"x","y":[711910,660509,488563,648038,552076,633706,976577,1137676,1291663,1576942,1437495,1593876,2146260,2087714,2990839,3297795,3622165,4342364,5455350,6351515,8011800,6952252,6759251,6929892,7748045,8253335,6975000,6776630,7483189,8230996,7336274,7689579],"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"yearID"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Avg_Salary"}},"legend":{"title":{"text":"teamID"},"tracegroupgap":0}},                        {"responsive": true}                    ).then(function(){
+<div>                            <div id="34051e44-820b-49fa-9d8d-9b65dd09197a" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("34051e44-820b-49fa-9d8d-9b65dd09197a")) {                    Plotly.newPlot(                        "34051e44-820b-49fa-9d8d-9b65dd09197a",                        [{"hovertemplate":"teamID=BOS\u003cbr\u003eyearID=%{x}\u003cbr\u003eAvg_Salary=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"BOS","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines","name":"BOS","orientation":"v","showlegend":true,"x":[1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016],"xaxis":"x","y":[435902,496628,676277,579003,672374,642447,1172250,1406793,1197438,1261969,877176,1177597,1281139,1719909,2048306,2598011,3438619,3612202,3701722,4243283,4410897,4448141,5108079,4763929,4184344,5601632,5991202,5093724,5225172,4484513,5659481,6501577],"yaxis":"y","type":"scatter"},{"hovertemplate":"teamID=NYA\u003cbr\u003eyearID=%{x}\u003cbr\u003eAvg_Salary=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"NYA","line":{"color":"#EF553B","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines","name":"NYA","orientation":"v","showlegend":true,"x":[1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016],"xaxis":"x","y":[711910,660509,488563,648038,552076,633706,976577,1137676,1291663,1576942,1437495,1593876,2146260,2087714,2990839,3297795,3622165,4342364,5455350,6351515,8011800,6952252,6759251,6929892,7748045,8253335,6975000,6776630,7483189,8230996,7336274,7689579],"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"yearID"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Avg_Salary"}},"legend":{"title":{"text":"teamID"},"tracegroupgap":0}},                        {"responsive": true}                    ).then(function(){
                             
-var gd = document.getElementById('fcbfa12c-0692-4432-9dab-075f94115b41');
+var gd = document.getElementById('34051e44-820b-49fa-9d8d-9b65dd09197a');
 var x = new MutationObserver(function (mutations, observer) {{
         var display = window.getComputedStyle(gd).display;
         if (!display || display === 'none') {{
@@ -3765,11 +3766,11 @@ if (outputEl) {{
 </div>
 </div>
 <p>Findings:</p>
-<ul>
-<li><p>Boston Red Sox always had a lower average salary compared to the Yankees, except in some eyars in the early 90’s and 80’s.</p></li>
-<li><p>New York Yankees had their highest average salary in 2010 with $8.25 M.</p></li>
-<li><p>Boston Red Sox had their highest average the last year recorded in the data (2016) with $6.5 M.</p></li>
-</ul>
+<pre><code>- Boston Red Sox always had a lower average salary compared to the Yankees, except in some eyars in the early 90&#39;s and 80&#39;s.
+
+- New York Yankees had their highest average salary in 2010 with $8.25 M.
+
+- Boston Red Sox had their highest average the last year recorded in the data (2016) with $6.5 M.</code></pre>
 </section>
 
 </main>
