@@ -31,7 +31,7 @@ import pandas as pd
 import numpy as np
 import time
 import matplotlib.pyplot as plt
-import plotly_express as px
+import plotly.express as px
 
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier 
@@ -79,8 +79,11 @@ fig.show()
 ```
 
 Findings: 
+
 - All the houses with more than 6 bedrooms were built before 1980, no matter how many units they have.
+
 - All the houses that have 4 or more units wew built before 1980, no matter the number of bedrooms.
+
 - Apparently houses in the past (before 1980) used to have more units and bathrooms than now.
 
 The next code creates 2 boxplots, one for houses before 1980 and the other of 1980 or after. This is very helpful to analyze the distribution of the variable "number of bathrooms" and the relationship with "before1980".
@@ -102,7 +105,9 @@ fig.show()
 ```
 
 Findings: 
+
 - Apparently houses in the past (before 1980) used to have less bathrooms than now.
+
 - Upper quartile of the houses built before 1980 is equal to the lower quartile to the houses built in 1980 or after.
 
 
@@ -142,7 +147,9 @@ feature_importances.plot.bar(title = 'Classifier Features by Importance')
 ```
 
 Findings: 
+
 - Livearea was the biggest predictor in whether the house was built before 1980, with around 10%.
+
 - Followed by number of bathrooms and stories with around 8%.
 
 ## QUESTION|TASK 4
@@ -160,5 +167,7 @@ ConfusionMatrixDisplay(confusion_matrix=cm).plot()
 ```
 
 Findings:
+
 - The model accuracy was 92.3%.
+
 - According to the confusion matrix, there was 279 false positives and 251 false negatives. The accuracy was lower for the houses that were built in 1980 or after.
