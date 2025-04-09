@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Semester Project</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Semester Project_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Semester Project_files/libs/quarto-html/quarto.js"></script>
+<script src="Semester Project_files/libs/quarto-html/popper.min.js"></script>
+<script src="Semester Project_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Semester Project_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Semester Project_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Semester Project_files/libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Semester Project_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Semester Project_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Semester Project_files/libs/bootstrap/bootstrap-973236bd072d72a04ee9cd82dcc9cb29.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="Semester Project_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="Semester Project_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Semester Project</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="importing-libraries" class="level2">
+<h2 class="anchored" data-anchor-id="importing-libraries">Importing libraries</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">library</span>(pander)</span>
+<span id="cb1-8"><a href="#cb1-8"></a>reticulate<span class="sc">::</span><span class="fu">py_require</span>(<span class="st">"kagglehub"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="loading-datasets" class="level2">
+<h2 class="anchored" data-anchor-id="loading-datasets">Loading datasets</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>reticulate<span class="sc">::</span><span class="fu">py_install</span>(<span class="st">"kagglehub"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Using Python: /Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12
+Creating virtual environment '~/.virtualenvs/r-reticulate' ... </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Done!
+Installing packages: pip, wheel, setuptools</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Virtual environment '~/.virtualenvs/r-reticulate' successfully created.
+Using virtual environment '~/.virtualenvs/r-reticulate' ...</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">py_run_string</span>(<span class="st">"</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="st">import kagglehub</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="st">path = kagglehub.dataset_download('avikumart/bmwcsv')</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="st">path1 = kagglehub.dataset_download('danielkyrka/bmw-pricing-challenge')"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5"></a></span>
+<span id="cb6-6"><a href="#cb6-6"></a>dataset_path <span class="ot">&lt;-</span> py<span class="sc">$</span>path</span>
+<span id="cb6-7"><a href="#cb6-7"></a>dataset_path1 <span class="ot">&lt;-</span> py<span class="sc">$</span>path1</span>
+<span id="cb6-8"><a href="#cb6-8"></a></span>
+<span id="cb6-9"><a href="#cb6-9"></a>bmw_models <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(dataset_path, <span class="st">'bmw.csv'</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="fu">trimws</span>(model))</span>
+<span id="cb6-10"><a href="#cb6-10"></a>bmw_sales <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(dataset_path1, <span class="st">'bmw_pricing_challenge.csv'</span>)) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>maker_key, <span class="sc">-</span><span class="fu">matches</span>(<span class="st">"^feature_[1-8]$"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="wrangling" class="level2">
+<h2 class="anchored" data-anchor-id="wrangling">Wrangling</h2>
+<p>Both dataset have some similar fields, so I had to do some changes in order to combine them. Specially in the “model_key” column of the second dataset.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>bmw_sales_edited <span class="ot">&lt;-</span> bmw_sales <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">str_sub</span>(registration_date, <span class="dv">1</span>, <span class="dv">4</span>),</span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="at">model =</span> <span class="fu">ifelse</span>(</span>
+<span id="cb7-4"><a href="#cb7-4"></a>      <span class="fu">grepl</span>(<span class="st">"^[0-9]"</span>, model_key),  <span class="co"># If the model starts with a digit</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>      <span class="fu">paste0</span>(<span class="fu">substr</span>(model_key, <span class="dv">1</span>, <span class="dv">1</span>), <span class="st">" Series"</span>),</span>
+<span id="cb7-6"><a href="#cb7-6"></a>      </span>
+<span id="cb7-7"><a href="#cb7-7"></a>      <span class="fu">ifelse</span>(</span>
+<span id="cb7-8"><a href="#cb7-8"></a>        <span class="fu">grepl</span>(<span class="st">"^M"</span>, model_key) <span class="sc">&amp;</span> <span class="fu">nchar</span>(model_key) <span class="sc">&gt;</span> <span class="dv">2</span>,  <span class="co"># If the model starts with "M" and is longer than 2 characters</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>        <span class="fu">paste0</span>(<span class="fu">substr</span>(model_key, <span class="dv">2</span>, <span class="dv">2</span>), <span class="st">" Series"</span>),  <span class="co"># Skip the "M" and take the first digit</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a>        </span>
+<span id="cb7-11"><a href="#cb7-11"></a>        <span class="fu">ifelse</span>(</span>
+<span id="cb7-12"><a href="#cb7-12"></a>          <span class="fu">grepl</span>(<span class="st">"^M"</span>, model_key),  <span class="co"># If the model starts with "M" but is 2 characters or less (e.g., "M3", "M4")</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a>          model_key,  <span class="co"># Keep "M3", "M4", etc. unchanged</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a>          </span>
+<span id="cb7-15"><a href="#cb7-15"></a>          <span class="fu">sub</span>(<span class="st">" .*"</span>, <span class="st">""</span>, model_key)  <span class="co"># Otherwise, take the first word</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a>        )))) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">fuelType =</span> fuel) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>registration_date)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>I combined the two BMW datasets by binding their rows after ensuring that the year column had the same data type (character). I also standardized the fuelType variable by converting all values to lowercase and consolidating equivalent categories.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>bmw_models<span class="sc">$</span>year <span class="ot">&lt;-</span> <span class="fu">as.character</span>(bmw_models<span class="sc">$</span>year) </span>
+<span id="cb8-2"><a href="#cb8-2"></a>bmw_sales_edited<span class="sc">$</span>year <span class="ot">&lt;-</span> <span class="fu">as.character</span>(bmw_sales_edited<span class="sc">$</span>year)</span>
+<span id="cb8-3"><a href="#cb8-3"></a></span>
+<span id="cb8-4"><a href="#cb8-4"></a>combined_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(bmw_models, bmw_sales_edited) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">fuelType =</span> <span class="fu">tolower</span>(fuelType),  <span class="co"># First, convert to lowercase</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>         <span class="at">fuelType =</span> <span class="fu">case_when</span>(</span>
+<span id="cb8-6"><a href="#cb8-6"></a>           fuelType <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"electro"</span>, <span class="st">"electric"</span>) <span class="sc">~</span> <span class="st">"electric"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7"></a>           fuelType <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"hybrid"</span>, <span class="st">"hybrid_petrol"</span>) <span class="sc">~</span> <span class="st">"hybrid"</span>,</span>
+<span id="cb8-8"><a href="#cb8-8"></a>           fuelType <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"petrol"</span>) <span class="sc">~</span> <span class="st">"petrol"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9"></a>           fuelType <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"diesel"</span>) <span class="sc">~</span> <span class="st">"diesel"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10"></a>           <span class="cn">TRUE</span> <span class="sc">~</span> fuelType  <span class="co"># keep other values as-is</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a>         ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="visualization" class="level2">
+<h2 class="anchored" data-anchor-id="visualization">Visualization</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">table</span>(combined_data<span class="sc">$</span>fuelType, combined_data<span class="sc">$</span>model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>          
+           1 Series 2 Series 3 Series 4 Series 5 Series 6 Series 7 Series
+  diesel       1638      587     3494      777     1923      113      132
+  electric        0        0        0        0        0        0        0
+  hybrid          0       36       91        0       91        0        3
+  other           0        3       21        0        1        0        0
+  petrol        895      657      637      321      192       26       25
+          
+           8 Series ActiveHybrid   i3   i8   M2   M3   M4   M5   M6   X1   X2
+  diesel         17            0    0    0    0    0    0    0    0  903  147
+  electric        0            0    6    0    0    0    0    0    0    0    0
+  hybrid          0            1   36   17    0    0    0    0    0    0    0
+  other           0            0    7    1    0    0    0    0    0    0    0
+  petrol         22            0    0    0   21   34  127   30    8  176  141
+          
+             X3   X4   X5   X6   X7   Z3   Z4
+  diesel    898  201  654  135   49    0    0
+  electric    0    0    0    0    0    0    0
+  hybrid      6    0   24    1    0    0    0
+  other       0    0    3    0    0    0    0
+  petrol     85   24   38   22    6    7  114</code></pre>
+</div>
+</div>
+<p>Since only Series 1 to 5 have a significant number of records and include a variety of fuel types, I selected them for the following visualization:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>model_comparison <span class="ot">&lt;-</span> combined_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(mileage <span class="sc">&lt;</span><span class="dv">600000</span>, model <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"1 Series"</span>,<span class="st">"2 Series"</span>, <span class="st">"3 Series"</span>, <span class="st">"4 Series"</span>, <span class="st">"5 Series"</span>), fuelType<span class="sc">!=</span> <span class="st">"other"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2"></a></span>
+<span id="cb11-3"><a href="#cb11-3"></a></span>
+<span id="cb11-4"><a href="#cb11-4"></a></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="co"># Compute the predicted values for each fuelType and model</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb11-7"><a href="#cb11-7"></a></span>
+<span id="cb11-8"><a href="#cb11-8"></a>regression_lines <span class="ot">&lt;-</span> model_comparison <span class="sc">%&gt;%</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>  <span class="fu">group_by</span>(model, fuelType) <span class="sc">%&gt;%</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a>  <span class="fu">do</span>({</span>
+<span id="cb11-11"><a href="#cb11-11"></a>    fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> mileage, <span class="at">data =</span> .)</span>
+<span id="cb11-12"><a href="#cb11-12"></a>    <span class="fu">data.frame</span>(</span>
+<span id="cb11-13"><a href="#cb11-13"></a>      <span class="at">mileage =</span> <span class="fu">seq</span>(<span class="fu">min</span>(.<span class="sc">$</span>mileage), <span class="fu">max</span>(.<span class="sc">$</span>mileage), <span class="at">length.out =</span> <span class="dv">100</span>),</span>
+<span id="cb11-14"><a href="#cb11-14"></a>      <span class="at">price =</span> <span class="fu">predict</span>(fit, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">mileage =</span> <span class="fu">seq</span>(<span class="fu">min</span>(.<span class="sc">$</span>mileage), <span class="fu">max</span>(.<span class="sc">$</span>mileage), <span class="at">length.out =</span> <span class="dv">100</span>))),</span>
+<span id="cb11-15"><a href="#cb11-15"></a>      <span class="at">model =</span> <span class="fu">unique</span>(.<span class="sc">$</span>model),</span>
+<span id="cb11-16"><a href="#cb11-16"></a>      <span class="at">fuelType =</span> <span class="fu">unique</span>(.<span class="sc">$</span>fuelType)</span>
+<span id="cb11-17"><a href="#cb11-17"></a>    )</span>
+<span id="cb11-18"><a href="#cb11-18"></a>  })</span>
+<span id="cb11-19"><a href="#cb11-19"></a></span>
+<span id="cb11-20"><a href="#cb11-20"></a><span class="co"># Add black dot lines</span></span>
+<span id="cb11-21"><a href="#cb11-21"></a><span class="fu">ggplot</span>(model_comparison, <span class="fu">aes</span>(<span class="at">x =</span> mileage, <span class="at">y =</span> price, <span class="at">color =</span> fuelType)) <span class="sc">+</span></span>
+<span id="cb11-22"><a href="#cb11-22"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> regression_lines, <span class="fu">aes</span>(<span class="at">x =</span> mileage, <span class="at">y =</span> price), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">1.2</span>, <span class="at">shape =</span> <span class="dv">16</span>,<span class="at">alpha =</span> <span class="fl">0.4</span>,  <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb11-23"><a href="#cb11-23"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.35</span>) <span class="sc">+</span> </span>
+<span id="cb11-24"><a href="#cb11-24"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb11-25"><a href="#cb11-25"></a></span>
+<span id="cb11-26"><a href="#cb11-26"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> model, <span class="at">nrow =</span> <span class="dv">1</span>, <span class="at">scales =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb11-27"><a href="#cb11-27"></a>  <span class="fu">labs</span>(</span>
+<span id="cb11-28"><a href="#cb11-28"></a>    <span class="at">title =</span> <span class="st">"Diesel BMWs Maintain Value More Consistently as Mileage Increases Compared to Petrol"</span>,</span>
+<span id="cb11-29"><a href="#cb11-29"></a>    <span class="at">x =</span> <span class="st">"Mileage"</span>,</span>
+<span id="cb11-30"><a href="#cb11-30"></a>    <span class="at">y =</span> <span class="st">"Price ($)"</span>,</span>
+<span id="cb11-31"><a href="#cb11-31"></a>    <span class="at">color =</span> <span class="st">"Fuel Type"</span></span>
+<span id="cb11-32"><a href="#cb11-32"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-33"><a href="#cb11-33"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">1000</span>, <span class="at">suffix =</span> <span class="st">"K"</span>)) <span class="sc">+</span></span>
+<span id="cb11-34"><a href="#cb11-34"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">1000</span>, <span class="at">suffix =</span> <span class="st">"K"</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50000</span>)) <span class="sc">+</span></span>
+<span id="cb11-35"><a href="#cb11-35"></a>  <span class="fu">theme</span>(</span>
+<span id="cb11-36"><a href="#cb11-36"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb11-37"><a href="#cb11-37"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.1</span>),</span>
+<span id="cb11-38"><a href="#cb11-38"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb11-39"><a href="#cb11-39"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb11-40"><a href="#cb11-40"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb11-41"><a href="#cb11-41"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span><span class="dv">20</span>),</span>
+<span id="cb11-42"><a href="#cb11-42"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>),</span>
+<span id="cb11-43"><a href="#cb11-43"></a>    <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="fl">1.2</span>, <span class="st">"lines"</span>),</span>
+<span id="cb11-44"><a href="#cb11-44"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey80"</span>, <span class="at">linetype =</span> <span class="st">"dotted"</span>)</span>
+<span id="cb11-45"><a href="#cb11-45"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Semester-Project_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="1440"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If you’re a car and BMW enthusiast who’s also financially responsible, the chart above can guide you in choosing the best fuel type for your next BMW. Among the 1–5 Series models, those with diesel engines consistently preserve their value much better than their petrol counterparts. As for hybrid models, there’s no consistent pattern across the three series (2,3,5) that offer this option. Interestingly, the Series 2 hybrids show a depreciation trend similar to the diesel versions, making them a solid choice—especially if the 2 Series chassis is your thing. On the other hand, the Series 3 and 5 hybrids performed the worst, even below the petrol versions.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">table</span>(bmw_sales_edited<span class="sc">$</span>car_type,bmw_sales_edited<span class="sc">$</span>model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>             
+              1 Series 2 Series 3 Series 4 Series 5 Series 6 Series 7 Series
+  convertible        9        6       13        9        0        2        0
+  coupe              5       10       27       44        0       12        0
+  estate             2        0      995        0      607        0        0
+  hatchback        422        0      175       44       44        8        1
+  sedan             13        0      585        6      498        9       53
+  subcompact       113        0        3        0        0        0        0
+  suv                0        0        0        0        1        0        0
+  van                0       38        2        0        1        0        0
+             
+              ActiveHybrid  i3  i8  M3  M4  M5  X1  X3  X4  X5  X6  Z4
+  convertible            0   0   0   1   1   0   0   0   0   0   0   6
+  coupe                  0   0   1   4   1   0   0   0   0   0   0   0
+  estate                 0   0   0   0   0   0   0   2   0   0   0   0
+  hatchback              0   5   0   0   0   0   0   0   0   0   0   0
+  sedan                  1   0   0   2   0   1   0   0   0   0   0   0
+  subcompact             0   1   0   0   0   0   0   0   0   0   0   0
+  suv                    0   0   0   0   0   0 274 434  46 251  52   0
+  van                    0   0   0   0   0   0   1   2   0   0   0   0</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>bmw_sales_edited1 <span class="ot">&lt;-</span> bmw_sales_edited <span class="sc">%&gt;%</span> <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"2012"</span>,<span class="st">"2013"</span>,<span class="st">"2014"</span>), car_type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"estate"</span>,<span class="st">"sedan"</span>,<span class="st">"hatchback"</span>),</span>
+<span id="cb14-2"><a href="#cb14-2"></a>                                                 model <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"3 Series"</span>,<span class="st">"5 Series"</span>))</span>
+<span id="cb14-3"><a href="#cb14-3"></a></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="fu">ggplot</span>(bmw_sales_edited1, <span class="fu">aes</span>(<span class="at">x =</span> mileage, <span class="at">y =</span> price, <span class="at">color =</span> car_type)) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.45</span>) <span class="sc">+</span> </span>
+<span id="cb14-6"><a href="#cb14-6"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size=</span><span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> model, <span class="at">nrow =</span> <span class="dv">1</span>, <span class="at">scales =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a>  <span class="fu">labs</span>(</span>
+<span id="cb14-9"><a href="#cb14-9"></a>    <span class="at">title =</span> <span class="st">"3 Series sedans and 5 Series hatchbacks hold their value better than the other options"</span>,</span>
+<span id="cb14-10"><a href="#cb14-10"></a>    <span class="at">x =</span> <span class="st">"Mileage"</span>,</span>
+<span id="cb14-11"><a href="#cb14-11"></a>    <span class="at">y =</span> <span class="st">"Price ($)"</span>,</span>
+<span id="cb14-12"><a href="#cb14-12"></a>    <span class="at">color =</span> <span class="st">"Car Type"</span></span>
+<span id="cb14-13"><a href="#cb14-13"></a>  ) <span class="sc">+</span></span>
+<span id="cb14-14"><a href="#cb14-14"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_number</span>(<span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">1000</span>, <span class="at">suffix =</span> <span class="st">"K"</span>)) <span class="sc">+</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_number</span>(<span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">1000</span>, <span class="at">suffix =</span> <span class="st">"K"</span>)) <span class="sc">+</span></span>
+<span id="cb14-16"><a href="#cb14-16"></a>  <span class="fu">theme</span>(</span>
+<span id="cb14-17"><a href="#cb14-17"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">face =</span> <span class="st">"bold"</span>),  <span class="co"># Facet labels</span></span>
+<span id="cb14-18"><a href="#cb14-18"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),  <span class="co"># Title formatting</span></span>
+<span id="cb14-19"><a href="#cb14-19"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),  <span class="co"># Axis titles size</span></span>
+<span id="cb14-20"><a href="#cb14-20"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),  <span class="co"># Axis labels size</span></span>
+<span id="cb14-21"><a href="#cb14-21"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>,  <span class="co"># Move legend to the bottom</span></span>
+<span id="cb14-22"><a href="#cb14-22"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>),  <span class="co"># Legend title size</span></span>
+<span id="cb14-23"><a href="#cb14-23"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),  <span class="co"># Legend text size</span></span>
+<span id="cb14-24"><a href="#cb14-24"></a>    <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="fl">1.2</span>, <span class="st">"lines"</span>),  <span class="co"># Adjust legend key size</span></span>
+<span id="cb14-25"><a href="#cb14-25"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey80"</span>, <span class="at">linetype =</span> <span class="st">"dotted"</span>)  <span class="co"># Grid lines</span></span>
+<span id="cb14-26"><a href="#cb14-26"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Semester-Project_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="1440"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>-As expected, the Series 3 sedan holds its value much better than the station wagon and hatchback options. This makes sense, as it’s arguably the best-looking Series 3 variant and also very popular.</p>
+<p>-For the Series 5, the hatchback is the best option financially. It outperforms both the station wagon and sedan, which show very similar depreciation trends. This model has a unique style that doesn’t look like a typical hatchback and is well known as the Gran Turismo version.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
