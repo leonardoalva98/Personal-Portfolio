@@ -205,7 +205,7 @@ theme(
 ```
 
 ::: {.cell-output-display}
-![](Semester-Project_files/figure-html/unnamed-chunk-7-1.png){width=1440}
+![](bmw_value_retention_files/figure-html/unnamed-chunk-7-1.png){width=1440}
 :::
 :::
 
@@ -302,7 +302,7 @@ ggplot(model_comparison, aes(x = mileage, y = price)) +
 ```
 
 ::: {.cell-output-display}
-![](Semester-Project_files/figure-html/unnamed-chunk-11-1.png){width=1440}
+![](bmw_value_retention_files/figure-html/unnamed-chunk-11-1.png){width=1440}
 :::
 :::
 
@@ -347,6 +347,6 @@ grid.arrange(slope_table,
 ```
 
 ::: {.cell-output-display}
-![](Semester-Project_files/figure-html/unnamed-chunk-12-1.png){width=672}
+![](bmw_value_retention_files/figure-html/unnamed-chunk-12-1.png){width=672}
 :::
 :::
