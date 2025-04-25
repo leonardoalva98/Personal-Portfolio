@@ -7,8 +7,6 @@ execute:
 format:
   html:
     code-fold: true
-    embedded-resources: true
-    self-contained: true
     code-line-numbers: true
 ---
 
@@ -61,7 +59,19 @@ I got these 2 datasets from kaggle. I used reticulate and a python script to get
 py_run_string("import kagglehub
 path = kagglehub.dataset_download('avikumart/bmwcsv')
 path1 = kagglehub.dataset_download('danielkyrka/bmw-pricing-challenge')")
+```
 
+::: {.cell-output .cell-output-stdout}
+
+```
+Warning: Looks like you're using an outdated `kagglehub` version (installed: 0.3.11), please consider upgrading to the latest version (0.3.12).
+Warning: Looks like you're using an outdated `kagglehub` version (installed: 0.3.11), please consider upgrading to the latest version (0.3.12).
+```
+
+
+:::
+
+```{.r .cell-code}
 dataset_path <- py$path
 dataset_path1 <- py$path1
 
@@ -303,7 +313,7 @@ From both the graph above and the slope table below, we can observe that smaller
 
 - The X4, a mid-size SUV, shows the slowest depreciation overall, with a slope of -0.0157, showing it holds value very well relative to its mileage.
 
-This suggests that the X4 offers the best balance between size, design, and resale value. In fact, in my opinion, the X4 not only provides good financial value but also features one of the best-looking designs between all BMW SUVs. It's a perfectly sized option, especially when compared to its larger version, the X6, which shares a similar coupe-style design but performs significantly worse in terms of depreciation.
+This suggests that the X4 offers the best balance between size, design, and resale value. In fact, in my opinion, the X4 not only provides good financial value but also features one of the best \looking designs between all BMW SUVs. It's a perfectly sized option, especially when compared to its larger version, the X6, which shares a similar coupe-style design but performs significantly worse in terms of depreciation.
 
 
 
