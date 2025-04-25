@@ -16,10 +16,10 @@ format:
 In this project, I aim to answer two questions that are personally meaningful to me:
 
 1. Performance & Value Retention (compact)
-- If I want a powerful BMW that retains its value well as mileage increases, which series should I consider buying?
+- If I want a compact BMW, with decent horsepower, and also retains its value well as mileage increases, which series should I consider buying?
 
 2. Family-Friendly & Durable (SUV)
-If I’m looking for a family-friendly BMW SUV, which model best retains its value over mileage?
+- If I’m looking for a family-friendly BMW SUV, which model best retains its value over mileage?
 
 These questions combine both emotional and financial aspects of car ownership, helping identify models that deliver lasting performance, practicality, and investment value.
 
@@ -65,10 +65,14 @@ head(bmw_sales,20)
 head(bmw_models,20)
 ```
 
+Before plotting, I narrowed down the dataset to include only BMW 1, 2, 3, and 5 Series models manufactured between 2011 and 2015. To keep the comparison fair. I also excluded vehicles priced over $50,000 and those with missing or invalid engine size values.
 
 ```{r}
 bmw_models_edited <- bmw_models %>% filter(model %in% c("1 Series","2 Series", "3 Series", "5 Series"), year >2010 & year<2016, price <50000, engineSize>0 )
 ```
+
+
+I got separate linear regression models for each combination of BMW model series and engine size to examine how mileage impacts price. From these models, I extracted the slope and intercept values to understand price depreciation patterns.
 
 
 ```{r}
@@ -80,7 +84,12 @@ regression_data <- bmw_models_edited %>%
     data.frame(
       slope = coef(model)[2],
       intercept = coef(model)[1])})
+```
 
+
+To prepare for labeling these lines in a plot, I created fixed x-positions and variable y-positions to place the labels without overlapping.
+
+```{r}
 # Set fixed positions with different Y values to avoid overlap
 label_positions <- regression_data %>%
   group_by(model) %>%
@@ -93,7 +102,6 @@ label_positions <- regression_data %>%
 
 ```{r, fig.width=15, fig.height=10}
 
-# Create the plot with labels at top right
 ggplot(bmw_models_edited, aes(x = mileage, y = price, color = as.factor(engineSize))) +
   geom_smooth(method = "lm", se = FALSE, linetype = "dashed", size = 1.5) +
   geom_point(alpha = 0.35) +
@@ -104,8 +112,8 @@ ggplot(bmw_models_edited, aes(x = mileage, y = price, color = as.factor(engineSi
       y = y_pos, 
       label = paste0("Slope: ", round(slope, 3)),
       color = as.factor(engineSize)),
-    hjust = 1,  # Right-align text
-    vjust = 0,  # Top-align text
+    hjust = 1,
+    vjust = 0,  
     show.legend = FALSE
   ) +
   facet_wrap(~model) +
@@ -116,8 +124,8 @@ ggplot(bmw_models_edited, aes(x = mileage, y = price, color = as.factor(engineSi
     x = "Mileage",
     y = "Price ($)")+
 theme(
-    plot.title = element_text(size = 25),  # Adjust title size
-    axis.title = element_text(size = 14)   # Adjust axis title size
+    plot.title = element_text(size = 25),  
+    axis.title = element_text(size = 14)  
 )
 ```
 
@@ -128,61 +136,50 @@ As a car enthusiast (especially bmw enthusiast), I've always considered the 2 Se
 
 ## 2. Family-Friendly & Durable (SUV)
 
+First, I renamed the fuel column to fuelType for clarity, extracted the year from the registration_date column, and then removed the original date column.
+
 ```{r}
-
-bmw_sales_edited <- bmw_sales %>% 
-  mutate(year = str_sub(registration_date, 1, 4),
-    model = ifelse(
-      grepl("^[0-9]", model_key),  # If the model starts with a digit
-      paste0(substr(model_key, 1, 1), " Series"),
-      
-      ifelse(
-        grepl("^M", model_key) & nchar(model_key) > 2,  # If the model starts with "M" and is longer than 2 characters
-        paste0(substr(model_key, 2, 2), " Series"),  # Skip the "M" and take the first digit
-        
-        ifelse(
-          grepl("^M", model_key),  # If the model starts with "M" but is 2 characters or less (e.g., "M3", "M4")
-          model_key,  # Keep "M3", "M4", etc. unchanged
-          
-          sub(" .*", "", model_key)  # Otherwise, take the first word
-        )))) %>% rename(fuelType = fuel) %>% select(-registration_date)
-
-bmw_sales_edited
+bmw_sales_edited <- bmw_sales %>% rename(fuelType = fuel) %>% mutate(year = str_sub(registration_date, 1, 4))  %>% select(-registration_date)
 ```
 
-
+Then, I filtered the dataset to include only SUV models and restricted the year range to a short window, minimizing price variations caused by different model generations.
 
 ```{r}
 model_comparison <- bmw_sales_edited %>% filter(model_key %in% c("X1","X3","X4","X5","X6"), year>2010 & year<2016) 
 ```
 
+This following code analyzes how mileage impacts the price of different BMW SUVs. It fits a separate linear regression for each model to estimate the average price decline per mile driven. It then formats the results, gets the price drop per 1,000 miles, and categorizes the statistical significance of the relationship.
 
-
-```{r, fig.width=15}
+```{r}
 # Calculate slopes for each model
 slope_data <- model_comparison %>%
-  group_by(model_key) %>%
-  do(tidy(lm(price ~ mileage, data = .))) %>%
-  filter(term == "mileage") %>%
-  select(model_key, slope = estimate, std_error = std.error, p_value = p.value) %>%
+  group_by(model_key) %>% # Group the data by model
+  do(tidy(lm(price ~ mileage, data = .))) %>% # Fit a linear model (price ~ mileage) for each model and return tidy output
+  filter(term == "mileage") %>% # Keep only the row corresponding to the mileage coefficient (slope)
+  select(model_key, slope = estimate, std_error = std.error, p_value = p.value) %>% # Select relevant columns and rename for clarity
   mutate(
-    slope_formatted = round(slope, 4),
-    price_decline_per_1000_miles = round(slope * 1000, 2),
+    slope_formatted = round(slope, 4),  # Rounded slope
+    price_decline_per_1000_miles = round(slope * 1000, 2),  # How much price drops per 1,000 miles
+
+    # Add significance stars based on conventional p-value thresholds
     significance = case_when(
-      p_value < 0.001 ~ "***",
-      p_value < 0.01 ~ "**",
-      p_value < 0.05 ~ "*",
-      TRUE ~ "ns"
+      p_value < 0.001 ~ "Highly significant", 
+      p_value < 0.01  ~ "Moderately significant",   
+      p_value < 0.05  ~ "Marginally significant",    
+      TRUE ~ "Not significant"             
     )
   )
 
-# Create the main visualization
+```
+
+
+```{r, fig.width=15}
 ggplot(model_comparison, aes(x = mileage, y = price)) +
   geom_point() + 
   geom_smooth(method = "lm", se = FALSE, linetype = "dashed", size = 1.5) +
   facet_wrap(~ model_key, nrow = 1, scales = "free_x") +
   labs(
-    title = "Diesel BMWs Maintain Value More Consistently as Mileage Increases Compared to Petrol",
+    title = "Smaller BMW SUVs and a better value retention",
     x = "Mileage",
     y = "Price ($)",
     color = "Fuel Type"
@@ -192,7 +189,7 @@ ggplot(model_comparison, aes(x = mileage, y = price)) +
   theme_bw() +
   theme(
     strip.text = element_text(size = 12, face = "bold"),
-    plot.title = element_text(size = 16, face = "bold", hjust = 0.1),
+    plot.title = element_text(size = 20, face = "bold", hjust = 0.1),
     axis.title = element_text(size = 12),
     axis.text = element_text(size = 10),
     legend.position = "bottom",
@@ -202,6 +199,14 @@ ggplot(model_comparison, aes(x = mileage, y = price)) +
     panel.grid.major = element_line(color = "grey80", linetype = "dotted")
   )
 ```
+From both the graph above and the slope table below, we can observe that smaller BMW SUV models tend to retain their value better over time.
+
+- The X1 and X3, which are the most compact SUVs in the lineup, demonstrate strong value retention with relatively shallow depreciation slopes of -0.0241 and -0.0479, respectively.
+
+- The X4, a mid-size SUV, shows the slowest depreciation overall, with a slope of -0.0157, showing it holds value very well relative to its mileage.
+
+This suggests that the X4 offers the best balance between size, design, and resale value. In fact, in my opinion, the X4 not only provides good financial value but also features one of the best-looking designs between all BMW SUVs. It's a perfectly sized option, especially when compared to its larger version, the X6, which shares a similar coupe-style design but performs significantly worse in terms of depreciation.
+
 
 ```{r}
 # Format table data
@@ -226,8 +231,10 @@ create_slope_table <- function(data) {
 
 slope_table <- create_slope_table(table_data)
 grid.arrange(slope_table,
-             vp = viewport(y = 0.8, height = 0.4)) # Position higher up (y=0.8 instead of default 0.5)
+             vp = viewport(y = 0.8, height = 0.4)) 
 ```
+
+
 
 
 
