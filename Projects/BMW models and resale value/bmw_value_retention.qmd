@@ -1,5 +1,5 @@
 ---
-title: "Fuel Type and Car Category: Analyzing Value Retention in the BMW Used Car Market"
+title: "Analyzing Value Retention in the BMW Used Car Market"
 execute:
   keep-md: true
   df-print: paged
@@ -24,7 +24,6 @@ These questions combine both emotional and financial aspects of car ownership, h
 ## Importing libraries
 
 ```{r}
-
 library(reticulate)
 library(dplyr)
 library(lubridate)
