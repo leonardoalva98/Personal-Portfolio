@@ -51,8 +51,6 @@ dataset_path1 <- py$path1
 
 bmw_models <- read.csv(file.path(dataset_path, 'bmw.csv')) %>% mutate(model = trimws(model))
 bmw_sales <- read.csv(file.path(dataset_path1, 'bmw_pricing_challenge.csv')) %>% select(-maker_key, -matches("^feature_[1-8]$"))  #deleted the features since there was no explanation of their meaning
-
-head(bmw_sales,20)
 ```
 
 
@@ -128,7 +126,7 @@ theme(
 
 The 2 Series equipped with the larger 3.0 liter engine demonstrates exceptional value retention compared to other models. Meanwhile, the 1 Series, 3 Series, and 5 Series tend to maintain their value better when fitted with the smallest engine.
 
-As a car enthusiast (especially bmw enthusiast), I've always considered the 2 Series to be the perfect middle ground for performance, between the 3 and 1 series. I'm confident to say that performance-oriented buyers specifically look for 2 Series models with the biggest engine, creating a higher demand in the used market that supports their stronger value retention (3.0 L) compared to the 1.5 and 2.0 L options.
+As a car enthusiast (especially bmw enthusiast), I've always considered the 2 Series to be the perfect middle ground for performance, between the 3 and 1 series. I'm confident to say that, performance oriented buyers, specifically look for 2 Series models with the biggest engine, creating a higher demand in the used market that supports their stronger value retention (3.0 L) compared to the 1.5 and 2.0 L options.
 
 
 ## 2. Family-Friendly & Durable (SUV)
