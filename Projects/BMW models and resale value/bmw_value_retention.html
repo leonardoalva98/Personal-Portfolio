@@ -150,17 +150,8 @@ Warning: Looks like you're using an outdated `kagglehub` version (installed: 0.3
 <span id="cb4-2"><a href="#cb4-2"></a>dataset_path1 <span class="ot">&lt;-</span> py<span class="sc">$</span>path1</span>
 <span id="cb4-3"><a href="#cb4-3"></a></span>
 <span id="cb4-4"><a href="#cb4-4"></a>bmw_models <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(dataset_path, <span class="st">'bmw.csv'</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="fu">trimws</span>(model))</span>
-<span id="cb4-5"><a href="#cb4-5"></a>bmw_sales <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(dataset_path1, <span class="st">'bmw_pricing_challenge.csv'</span>)) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>maker_key, <span class="sc">-</span><span class="fu">matches</span>(<span class="st">"^feature_[1-8]$"</span>))  <span class="co">#deleted the features since there was no explanation of their meaning</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="fu">head</span>(bmw_sales,<span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-5"><a href="#cb4-5"></a>bmw_sales <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(dataset_path1, <span class="st">'bmw_pricing_challenge.csv'</span>)) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>maker_key, <span class="sc">-</span><span class="fu">matches</span>(<span class="st">"^feature_[1-8]$"</span>))  <span class="co">#deleted the features since there was no explanation of their meaning</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output-display">
-<div data-pagedtable="false">
-  <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["model_key"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mileage"],"name":[2],"type":["int"],"align":["right"]},{"label":["engine_power"],"name":[3],"type":["int"],"align":["right"]},{"label":["registration_date"],"name":[4],"type":["chr"],"align":["left"]},{"label":["fuel"],"name":[5],"type":["chr"],"align":["left"]},{"label":["paint_color"],"name":[6],"type":["chr"],"align":["left"]},{"label":["car_type"],"name":[7],"type":["chr"],"align":["left"]},{"label":["price"],"name":[8],"type":["int"],"align":["right"]},{"label":["sold_at"],"name":[9],"type":["chr"],"align":["left"]}],"data":[{"1":"118","2":"140411","3":"100","4":"2012-02-01","5":"diesel","6":"black","7":"convertible","8":"11300","9":"2018-01-01","_rn_":"1"},{"1":"M4","2":"13929","3":"317","4":"2016-04-01","5":"petrol","6":"grey","7":"convertible","8":"69700","9":"2018-02-01","_rn_":"2"},{"1":"320","2":"183297","3":"120","4":"2012-04-01","5":"diesel","6":"white","7":"convertible","8":"10200","9":"2018-02-01","_rn_":"3"},{"1":"420","2":"128035","3":"135","4":"2014-07-01","5":"diesel","6":"red","7":"convertible","8":"25100","9":"2018-02-01","_rn_":"4"},{"1":"425","2":"97097","3":"160","4":"2014-12-01","5":"diesel","6":"silver","7":"convertible","8":"33400","9":"2018-04-01","_rn_":"5"},{"1":"335","2":"152352","3":"225","4":"2011-05-01","5":"petrol","6":"black","7":"convertible","8":"17100","9":"2018-02-01","_rn_":"6"},{"1":"325","2":"205219","3":"145","4":"2009-05-01","5":"diesel","6":"grey","7":"convertible","8":"12400","9":"2018-02-01","_rn_":"7"},{"1":"118","2":"115560","3":"105","4":"2009-08-01","5":"petrol","6":"white","7":"convertible","8":"6100","9":"2018-02-01","_rn_":"8"},{"1":"Z4","2":"123886","3":"125","4":"2004-07-01","5":"petrol","6":"black","7":"convertible","8":"6200","9":"2018-03-01","_rn_":"9"},{"1":"320","2":"139541","3":"135","4":"2013-06-01","5":"diesel","6":"white","7":"convertible","8":"17300","9":"2018-03-01","_rn_":"10"},{"1":"320","2":"77115","3":"135","4":"2012-09-01","5":"diesel","6":"blue","7":"convertible","8":"19300","9":"2018-03-01","_rn_":"11"},{"1":"325","2":"228000","3":"145","4":"2009-09-01","5":"diesel","6":"black","7":"convertible","8":"13300","9":"2018-03-01","_rn_":"12"},{"1":"420","2":"132025","3":"135","4":"2014-03-01","5":"diesel","6":"blue","7":"convertible","8":"21700","9":"2018-03-01","_rn_":"13"},{"1":"420","2":"77061","3":"135","4":"2015-08-01","5":"diesel","6":"black","7":"convertible","8":"36300","9":"2018-03-01","_rn_":"14"},{"1":"120","2":"174631","3":"120","4":"2009-01-01","5":"diesel","6":"black","7":"convertible","8":"10500","9":"2018-04-01","_rn_":"15"},{"1":"120","2":"208945","3":"130","4":"2008-04-01","5":"diesel","6":"grey","7":"convertible","8":"8300","9":"2018-04-01","_rn_":"16"},{"1":"220","2":"21167","3":"135","4":"2015-07-01","5":"petrol","6":"white","7":"convertible","8":"21900","9":"2018-04-01","_rn_":"17"},{"1":"650","2":"24521","3":"270","4":"2008-01-01","5":"petrol","6":"grey","7":"convertible","8":"9200","9":"2018-09-01","_rn_":"18"},{"1":"325","2":"205474","3":"145","4":"2009-05-01","5":"diesel","6":"grey","7":"convertible","8":"11000","9":"2018-04-01","_rn_":"19"},{"1":"Z4","2":"128940","3":"110","4":"2008-03-01","5":"petrol","6":"black","7":"convertible","8":"7700","9":"2018-05-01","_rn_":"20"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-</div>
 </div>
 </section>
 <section id="performance-value-retention-compact" class="level2">
@@ -207,7 +198,7 @@ Warning: Looks like you're using an outdated `kagglehub` version (installed: 0.3
 <span id="cb8-2"><a href="#cb8-2"></a>label_positions <span class="ot">&lt;-</span> regression_data <span class="sc">%&gt;%</span></span>
 <span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">group_by</span>(model) <span class="sc">%&gt;%</span></span>
 <span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb8-5"><a href="#cb8-5"></a>    <span class="at">x_pos =</span> <span class="dv">130000</span>, </span>
+<span id="cb8-5"><a href="#cb8-5"></a>    <span class="at">x_pos =</span> <span class="dv">180000</span>, </span>
 <span id="cb8-6"><a href="#cb8-6"></a>    <span class="at">y_pos =</span> <span class="dv">18000</span> <span class="sc">-</span> (<span class="fu">row_number</span>() <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">1250</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -215,8 +206,8 @@ Warning: Looks like you're using an outdated `kagglehub` version (installed: 0.3
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">ggplot</span>(bmw_models_edited, <span class="fu">aes</span>(<span class="at">x =</span> mileage, <span class="at">y =</span> price, <span class="at">color =</span> <span class="fu">as.factor</span>(engineSize))) <span class="sc">+</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.35</span>) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.50</span>,<span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
 <span id="cb9-4"><a href="#cb9-4"></a>  <span class="fu">geom_text</span>(</span>
 <span id="cb9-5"><a href="#cb9-5"></a>    <span class="at">data =</span> label_positions,</span>
 <span id="cb9-6"><a href="#cb9-6"></a>    <span class="fu">aes</span>(</span>
@@ -226,30 +217,36 @@ Warning: Looks like you're using an outdated `kagglehub` version (installed: 0.3
 <span id="cb9-10"><a href="#cb9-10"></a>      <span class="at">color =</span> <span class="fu">as.factor</span>(engineSize)),</span>
 <span id="cb9-11"><a href="#cb9-11"></a>    <span class="at">hjust =</span> <span class="dv">1</span>,</span>
 <span id="cb9-12"><a href="#cb9-12"></a>    <span class="at">vjust =</span> <span class="dv">0</span>,  </span>
-<span id="cb9-13"><a href="#cb9-13"></a>    <span class="at">show.legend =</span> <span class="cn">FALSE</span></span>
-<span id="cb9-14"><a href="#cb9-14"></a>  ) <span class="sc">+</span></span>
-<span id="cb9-15"><a href="#cb9-15"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>model) <span class="sc">+</span></span>
-<span id="cb9-16"><a href="#cb9-16"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb9-17"><a href="#cb9-17"></a>  <span class="fu">labs</span>(</span>
-<span id="cb9-18"><a href="#cb9-18"></a>    <span class="at">color =</span> <span class="st">"Engine Size"</span>,</span>
-<span id="cb9-19"><a href="#cb9-19"></a>    <span class="at">title =</span> <span class="st">"Power vs. Value: How Engine Size Affects BMW Series Depreciation"</span>,</span>
-<span id="cb9-20"><a href="#cb9-20"></a>    <span class="at">x =</span> <span class="st">"Mileage"</span>,</span>
-<span id="cb9-21"><a href="#cb9-21"></a>    <span class="at">y =</span> <span class="st">"Price ($)"</span>)<span class="sc">+</span></span>
-<span id="cb9-22"><a href="#cb9-22"></a><span class="fu">theme</span>(</span>
-<span id="cb9-23"><a href="#cb9-23"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">25</span>),  </span>
-<span id="cb9-24"><a href="#cb9-24"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>)  </span>
-<span id="cb9-25"><a href="#cb9-25"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-13"><a href="#cb9-13"></a>    <span class="at">show.legend =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb9-14"><a href="#cb9-14"></a>    <span class="at">size=</span><span class="dv">7</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a>    </span>
+<span id="cb9-16"><a href="#cb9-16"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>model) <span class="sc">+</span></span>
+<span id="cb9-18"><a href="#cb9-18"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb9-19"><a href="#cb9-19"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-20"><a href="#cb9-20"></a>    <span class="at">color =</span> <span class="st">"Engine Size"</span>,</span>
+<span id="cb9-21"><a href="#cb9-21"></a>    <span class="at">title =</span> <span class="st">"Power vs. Value: How Engine Size Affects BMW Series Depreciation"</span>,</span>
+<span id="cb9-22"><a href="#cb9-22"></a>    <span class="at">x =</span> <span class="st">"Mileage"</span>,</span>
+<span id="cb9-23"><a href="#cb9-23"></a>    <span class="at">y =</span> <span class="st">"Price ($)"</span>)<span class="sc">+</span></span>
+<span id="cb9-24"><a href="#cb9-24"></a><span class="fu">theme</span>(</span>
+<span id="cb9-25"><a href="#cb9-25"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">40</span>),  </span>
+<span id="cb9-26"><a href="#cb9-26"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">25</span>),</span>
+<span id="cb9-27"><a href="#cb9-27"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>),  </span>
+<span id="cb9-28"><a href="#cb9-28"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span> <span class="dv">22</span>),</span>
+<span id="cb9-29"><a href="#cb9-29"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>),</span>
+<span id="cb9-30"><a href="#cb9-30"></a>    </span>
+<span id="cb9-31"><a href="#cb9-31"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="bmw_value_retention_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="1440"></p>
+<p><img src="bmw_value_retention_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="1920"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>The 2 Series equipped with the larger 3.0 liter engine demonstrates exceptional value retention compared to other models. Meanwhile, the 1 Series, 3 Series, and 5 Series tend to maintain their value better when fitted with the smallest engine.</p>
-<p>As a car enthusiast (especially bmw enthusiast), I’ve always considered the 2 Series to be the perfect middle ground for performance, between the 3 and 1 series. I’m confident to say that performance-oriented buyers specifically look for 2 Series models with the biggest engine, creating a higher demand in the used market that supports their stronger value retention (3.0 L) compared to the 1.5 and 2.0 L options.</p>
+<p>As a car enthusiast (especially bmw enthusiast), I’ve always considered the 2 Series to be the perfect middle ground for performance, between the 3 and 1 series. I’m confident to say that, performance oriented buyers, specifically look for 2 Series models with the biggest engine, creating a higher demand in the used market that supports their stronger value retention (3.0 L) compared to the 1.5 and 2.0 L options.</p>
 </section>
 <section id="family-friendly-durable-suv" class="level2">
 <h2 class="anchored" data-anchor-id="family-friendly-durable-suv">2. Family-Friendly &amp; Durable (SUV)</h2>

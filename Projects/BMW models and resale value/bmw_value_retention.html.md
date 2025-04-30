@@ -77,21 +77,7 @@ dataset_path1 <- py$path1
 
 bmw_models <- read.csv(file.path(dataset_path, 'bmw.csv')) %>% mutate(model = trimws(model))
 bmw_sales <- read.csv(file.path(dataset_path1, 'bmw_pricing_challenge.csv')) %>% select(-maker_key, -matches("^feature_[1-8]$"))  #deleted the features since there was no explanation of their meaning
-
-head(bmw_sales,20)
 ```
-
-::: {.cell-output-display}
-
-`````{=html}
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["model_key"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mileage"],"name":[2],"type":["int"],"align":["right"]},{"label":["engine_power"],"name":[3],"type":["int"],"align":["right"]},{"label":["registration_date"],"name":[4],"type":["chr"],"align":["left"]},{"label":["fuel"],"name":[5],"type":["chr"],"align":["left"]},{"label":["paint_color"],"name":[6],"type":["chr"],"align":["left"]},{"label":["car_type"],"name":[7],"type":["chr"],"align":["left"]},{"label":["price"],"name":[8],"type":["int"],"align":["right"]},{"label":["sold_at"],"name":[9],"type":["chr"],"align":["left"]}],"data":[{"1":"118","2":"140411","3":"100","4":"2012-02-01","5":"diesel","6":"black","7":"convertible","8":"11300","9":"2018-01-01","_rn_":"1"},{"1":"M4","2":"13929","3":"317","4":"2016-04-01","5":"petrol","6":"grey","7":"convertible","8":"69700","9":"2018-02-01","_rn_":"2"},{"1":"320","2":"183297","3":"120","4":"2012-04-01","5":"diesel","6":"white","7":"convertible","8":"10200","9":"2018-02-01","_rn_":"3"},{"1":"420","2":"128035","3":"135","4":"2014-07-01","5":"diesel","6":"red","7":"convertible","8":"25100","9":"2018-02-01","_rn_":"4"},{"1":"425","2":"97097","3":"160","4":"2014-12-01","5":"diesel","6":"silver","7":"convertible","8":"33400","9":"2018-04-01","_rn_":"5"},{"1":"335","2":"152352","3":"225","4":"2011-05-01","5":"petrol","6":"black","7":"convertible","8":"17100","9":"2018-02-01","_rn_":"6"},{"1":"325","2":"205219","3":"145","4":"2009-05-01","5":"diesel","6":"grey","7":"convertible","8":"12400","9":"2018-02-01","_rn_":"7"},{"1":"118","2":"115560","3":"105","4":"2009-08-01","5":"petrol","6":"white","7":"convertible","8":"6100","9":"2018-02-01","_rn_":"8"},{"1":"Z4","2":"123886","3":"125","4":"2004-07-01","5":"petrol","6":"black","7":"convertible","8":"6200","9":"2018-03-01","_rn_":"9"},{"1":"320","2":"139541","3":"135","4":"2013-06-01","5":"diesel","6":"white","7":"convertible","8":"17300","9":"2018-03-01","_rn_":"10"},{"1":"320","2":"77115","3":"135","4":"2012-09-01","5":"diesel","6":"blue","7":"convertible","8":"19300","9":"2018-03-01","_rn_":"11"},{"1":"325","2":"228000","3":"145","4":"2009-09-01","5":"diesel","6":"black","7":"convertible","8":"13300","9":"2018-03-01","_rn_":"12"},{"1":"420","2":"132025","3":"135","4":"2014-03-01","5":"diesel","6":"blue","7":"convertible","8":"21700","9":"2018-03-01","_rn_":"13"},{"1":"420","2":"77061","3":"135","4":"2015-08-01","5":"diesel","6":"black","7":"convertible","8":"36300","9":"2018-03-01","_rn_":"14"},{"1":"120","2":"174631","3":"120","4":"2009-01-01","5":"diesel","6":"black","7":"convertible","8":"10500","9":"2018-04-01","_rn_":"15"},{"1":"120","2":"208945","3":"130","4":"2008-04-01","5":"diesel","6":"grey","7":"convertible","8":"8300","9":"2018-04-01","_rn_":"16"},{"1":"220","2":"21167","3":"135","4":"2015-07-01","5":"petrol","6":"white","7":"convertible","8":"21900","9":"2018-04-01","_rn_":"17"},{"1":"650","2":"24521","3":"270","4":"2008-01-01","5":"petrol","6":"grey","7":"convertible","8":"9200","9":"2018-09-01","_rn_":"18"},{"1":"325","2":"205474","3":"145","4":"2009-05-01","5":"diesel","6":"grey","7":"convertible","8":"11000","9":"2018-04-01","_rn_":"19"},{"1":"Z4","2":"128940","3":"110","4":"2008-03-01","5":"petrol","6":"black","7":"convertible","8":"7700","9":"2018-05-01","_rn_":"20"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-`````
-
-:::
 :::
 
 
@@ -169,7 +155,7 @@ To prepare for labeling these lines in a plot, I created fixed x-positions and v
 label_positions <- regression_data %>%
   group_by(model) %>%
   mutate(
-    x_pos = 130000, 
+    x_pos = 180000, 
     y_pos = 18000 - (row_number() - 1) * 1250)
 ```
 :::
@@ -178,8 +164,8 @@ label_positions <- regression_data %>%
 
 ```{.r .cell-code}
 ggplot(bmw_models_edited, aes(x = mileage, y = price, color = as.factor(engineSize))) +
-  geom_smooth(method = "lm", se = FALSE, linetype = "dashed", size = 1.5) +
-  geom_point(alpha = 0.35) +
+  geom_smooth(method = "lm", se = FALSE, linetype = "dashed", size = 2.5) +
+  geom_point(alpha = 0.50,size = 2.5) +
   geom_text(
     data = label_positions,
     aes(
@@ -189,7 +175,9 @@ ggplot(bmw_models_edited, aes(x = mileage, y = price, color = as.factor(engineSi
       color = as.factor(engineSize)),
     hjust = 1,
     vjust = 0,  
-    show.legend = FALSE
+    show.legend = FALSE,
+    size=7
+    
   ) +
   facet_wrap(~model) +
   theme_bw() +
@@ -199,13 +187,17 @@ ggplot(bmw_models_edited, aes(x = mileage, y = price, color = as.factor(engineSi
     x = "Mileage",
     y = "Price ($)")+
 theme(
-    plot.title = element_text(size = 25),  
-    axis.title = element_text(size = 14)  
+    plot.title = element_text(size = 40),  
+    axis.title = element_text(size = 25),
+    axis.text = element_text(size = 20),  
+    legend.title = element_text(size= 22),
+    legend.text = element_text(size = 18),
+    
 )
 ```
 
 ::: {.cell-output-display}
-![](bmw_value_retention_files/figure-html/unnamed-chunk-7-1.png){width=1440}
+![](bmw_value_retention_files/figure-html/unnamed-chunk-7-1.png){width=1920}
 :::
 :::
 
@@ -213,7 +205,7 @@ theme(
 
 The 2 Series equipped with the larger 3.0 liter engine demonstrates exceptional value retention compared to other models. Meanwhile, the 1 Series, 3 Series, and 5 Series tend to maintain their value better when fitted with the smallest engine.
 
-As a car enthusiast (especially bmw enthusiast), I've always considered the 2 Series to be the perfect middle ground for performance, between the 3 and 1 series. I'm confident to say that performance-oriented buyers specifically look for 2 Series models with the biggest engine, creating a higher demand in the used market that supports their stronger value retention (3.0 L) compared to the 1.5 and 2.0 L options.
+As a car enthusiast (especially bmw enthusiast), I've always considered the 2 Series to be the perfect middle ground for performance, between the 3 and 1 series. I'm confident to say that, performance oriented buyers, specifically look for 2 Series models with the biggest engine, creating a higher demand in the used market that supports their stronger value retention (3.0 L) compared to the 1.5 and 2.0 L options.
 
 
 ## 2. Family-Friendly & Durable (SUV)
